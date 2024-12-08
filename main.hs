@@ -1,5 +1,3 @@
-import GHC.Conc (pseq)
-import GHC.Exts.Heap (ClosureType(BCO))
 -- zadanie 38:
 -- Liczby B-gładkie to takie, których dzielniki pierwsze są mniejsze lub równe B. Dla danego B i n ile jest liczb
 -- B-gładkich nie przekraczających n? Przykładowo dla B = 5 i n = 30 początkowe liczby 5-gładkie inaczej
