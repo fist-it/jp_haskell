@@ -24,11 +24,14 @@ collatzLength n
   | otherwise = 1 + collatzLength (3 * n + 1)
 
 longestCollatz :: Int -> (Int, Int)
-longestCollatz n = foldl1 maxByLength [(m, collatzLength m) | m <- [1 .. n]]
+longestCollatz n = loop (1, 1) 2
   where
-    maxByLength acc@(m1, len1) x@(m2, len2)
-      | len2 > len1 = x
-      | otherwise = acc
+    loop acc@(m1, len1) current
+      | current > n = acc
+      | len2 > len1 = loop (current, len2) (current + 1)
+      | otherwise = loop acc (current + 1)
+      where
+        len2 = collatzLength current
 
 collatz :: IO ()
 collatz = do
