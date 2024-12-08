@@ -16,5 +16,29 @@
 -- ciag collatza:
 -- n%2 == 0 -> n/2
 -- n%2 == 1 -> 3*n+1
+import Control.Monad ( when, forM_ )
 
-main = putStrLn "Hello, World!"
+sumOfSquares :: Int -> Int -> Int -> IO ()
+sumOfSquares curr sum n
+    | sum < n = do
+        let newCurr = curr+1
+            newSum  = sum + curr*curr
+
+        when (newSum < n) $ palindromeCheckAndPrint newSum curr sum
+        sumOfSquares newCurr newSum n
+    | otherwise = return ()
+
+palindromeCheckAndPrint :: Int -> Int -> Int -> IO ()
+palindromeCheckAndPrint n curr sum = 
+    when (isPalindrome n) $ print
+      ("n = " ++ show n ++ ", curr = " ++ show curr ++ ", sum = " ++ show sum)
+
+isPalindrome :: Int -> Bool
+isPalindrome n = 
+    let str = show n
+    in str == reverse str
+
+main = do 
+    let n = 485
+    forM_ [1..floor (sqrt (fromIntegral n))] $ \curr -> do
+        sumOfSquares curr 0 n
