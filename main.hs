@@ -38,7 +38,9 @@ isPalindrome n =
     let str = show n
     in str == reverse str
 
-main = do 
-    let n = 485
+printSumsOfConsecutiveSquaresThatArePalindromes :: Int -> IO ()
+printSumsOfConsecutiveSquaresThatArePalindromes n = do
     forM_ [1..floor (sqrt (fromIntegral n))] $ \curr -> do
         sumOfSquares curr 0 n
+
+main = printSumsOfConsecutiveSquaresThatArePalindromes 600
