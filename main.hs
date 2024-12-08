@@ -17,4 +17,26 @@
 -- n%2 == 0 -> n/2
 -- n%2 == 1 -> 3*n+1
 
-main = putStrLn "Hello, World!"
+collatzLength :: Int -> Int
+collatzLength 1 = 1
+collatzLength n
+  | even n = 1 + collatzLength (n `div` 2)
+  | otherwise = 1 + collatzLength (3 * n + 1)
+
+longestCollatz :: Int -> (Int, Int)
+longestCollatz n = foldl1 maxByLength [(m, collatzLength m) | m <- [1 .. n]]
+  where
+    maxByLength acc@(m1, len1) x@(m2, len2)
+      | len2 > len1 = x
+      | otherwise = acc
+
+collatz :: IO ()
+collatz = do
+  putStrLn "Podaj liczbę n:"
+  input <- getLine
+  let n = read input :: Int
+  let (m, length) = longestCollatz n
+  putStrLn $ "Ciąg Collatza - n = " ++ show n ++ ": Liczba " ++ show m ++ " ma najdłuższy ciąg Collatza o długości " ++ show length ++ "."
+
+main :: IO ()
+main = collatz
