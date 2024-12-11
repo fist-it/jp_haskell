@@ -13,7 +13,6 @@
 -- 3. filtrowanie przez sprawdzenie czy b jest wieksza lub rowna
 -- od wszystkich czynnikow pierwszych n
 
-
 -- Generowanie liczb pierwszych metodą Sita Eratostenesa
 primes :: Int -> [Int]
 primes n = sieve [2..n]
@@ -43,12 +42,46 @@ allBSmooth b n = [x | x <- [1..n], isBSmooth b x]
 countBSmooth :: Int -> Int -> Int
 countBSmooth b n = length (allBSmooth b n)
 
-
-
 -- zadanie 26:
 -- Palindrom 595 możemy zapisać jako sumę kwadratów kolejnych liczb naturalnych: 62 + 72 + 82 +
 -- 92 + 102 + 112 + 122. Dla danego n wydrukować wszystkie palindromy mniejsze od n, które możemy
 -- zapisać jako sumę kwadratów kolejnych liczb naturalnych.
+
+callNext :: Int -> Int -> Int -> IO()
+callNext curr sum n
+    | curr < ceiling(sqrt(fromIntegral n)) = do
+        let newCurr = curr+1
+        sumOfSquares curr sum n
+        callNext newCurr 0 n       
+    | otherwise = return ()
+
+sumOfSquares :: Int -> Int -> Int -> IO ()
+sumOfSquares curr sum n
+    | sum < n = do
+        let newCurr = curr+1
+            newSum  = sum + curr*curr
+
+        palindromeCheckAndPrint newSum n
+        sumOfSquares newCurr newSum n
+    | otherwise = return ()
+
+palindromeCheckAndPrint :: Int -> Int -> IO ()
+palindromeCheckAndPrint sum n
+    | isPalindrome sum && sum < n = do
+        print sum
+    | otherwise = return ()
+
+isPalindrome :: Int -> Bool
+isPalindrome n = 
+    let str = show n
+    in str == reverse str
+
+printAllPalindromes :: IO ()
+printAllPalindromes = do
+    putStrLn "Podaj liczbę n:"
+    input <- getLine
+    let n = read input :: Int
+    callNext 1 0 n
 
 -- zadanie 9:
 -- dla danej liczby naturalnej n podaj dla jakiej liczby naturalnej m <= n
@@ -58,6 +91,8 @@ countBSmooth b n = length (allBSmooth b n)
 -- n%2 == 0 -> n/2
 -- n%2 == 1 -> 3*n+1
 
--- main :: IO ()
--- main = do
---   putStrLn "Zadanie 38:"
+main :: IO ()
+main = do
+    putStrLn "Zadanie 26"
+    printAllPalindromes
+    putStrLn "Zadanie 38"
