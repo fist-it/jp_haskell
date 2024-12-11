@@ -18,7 +18,7 @@
 -- n%2 == 1 -> 3*n+1
 callNext :: Int -> Int -> Int -> IO()
 callNext curr sum n
-    | curr < floor(sqrt(fromIntegral n)) = do
+    | curr < ceiling(sqrt(fromIntegral n)) = do
         let newCurr = curr+1
         sumOfSquares curr sum n
         callNext newCurr 0 n       
@@ -45,8 +45,11 @@ isPalindrome n =
     let str = show n
     in str == reverse str
 
-printAllPalindromes :: Int -> IO ()
-printAllPalindromes n = do
+printAllPalindromes :: IO ()
+printAllPalindromes = do
+    putStrLn "Podaj liczbę n:"
+    input <- getLine
+    let n = read input :: Int
     callNext 1 0 n
 
-main = printAllPalindromes 600
+main = printAllPalindromes
