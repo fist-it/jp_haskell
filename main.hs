@@ -91,8 +91,34 @@ printAllPalindromes = do
 -- n%2 == 0 -> n/2
 -- n%2 == 1 -> 3*n+1
 
+collatzLength :: Int -> Int
+collatzLength 1 = 1
+collatzLength n
+  | even n = 1 + collatzLength (n `div` 2)
+  | otherwise = 1 + collatzLength (3 * n + 1)
+
+longestCollatz :: Int -> (Int, Int)
+longestCollatz n = loop (1, 1) 2
+  where
+    loop acc@(m1, len1) current
+      | current > n = acc
+      | len2 > len1 = loop (current, len2) (current + 1)
+      | otherwise = loop acc (current + 1)
+      where
+        len2 = collatzLength current
+
+collatz :: IO ()
+collatz = do
+  putStrLn "Podaj liczbę n:"
+  input <- getLine
+  let n = read input :: Int
+  let (m, length) = longestCollatz n
+  putStrLn $ "Ciąg Collatza - n = " ++ show n ++ ": Liczba " ++ show m ++ " ma najdłuższy ciąg Collatza o długości " ++ show length ++ "."
+
 main :: IO ()
 main = do
+    putStrLn "Zadanie 9"
+    collatz
     putStrLn "Zadanie 26"
     printAllPalindromes
     putStrLn "Zadanie 38"
