@@ -18,6 +18,14 @@
 -- n%2 == 1 -> 3*n+1
 import Control.Monad ( when, forM_ )
 
+callNext :: Int -> Int -> Int -> IO()
+callNext curr sum n
+    | curr < floor(sqrt(fromIntegral n)) = do
+        let newCurr = curr+1
+        sumOfSquares curr sum n
+        callNext newCurr 0 n       
+    | otherwise = return ()
+
 sumOfSquares :: Int -> Int -> Int -> IO ()
 sumOfSquares curr sum n
     | sum < n = do
@@ -29,9 +37,10 @@ sumOfSquares curr sum n
     | otherwise = return ()
 
 palindromeCheckAndPrint :: Int -> Int -> Int -> IO ()
-palindromeCheckAndPrint n curr sum = 
-    when (isPalindrome n) $ print
-      ("n = " ++ show n ++ ", curr = " ++ show curr ++ ", sum = " ++ show sum)
+palindromeCheckAndPrint n curr sum
+    | isPalindrome n = do
+        print n
+    | otherwise = return ()
 
 isPalindrome :: Int -> Bool
 isPalindrome n = 
@@ -40,7 +49,6 @@ isPalindrome n =
 
 printSumsOfConsecutiveSquaresThatArePalindromes :: Int -> IO ()
 printSumsOfConsecutiveSquaresThatArePalindromes n = do
-    forM_ [1..floor (sqrt (fromIntegral n))] $ \curr -> do
-        sumOfSquares curr 0 n
+    callNext 1 0 n
 
 main = printSumsOfConsecutiveSquaresThatArePalindromes 600
