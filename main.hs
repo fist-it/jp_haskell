@@ -16,8 +16,6 @@
 -- ciag collatza:
 -- n%2 == 0 -> n/2
 -- n%2 == 1 -> 3*n+1
-import Control.Monad ( when, forM_ )
-
 callNext :: Int -> Int -> Int -> IO()
 callNext curr sum n
     | curr < floor(sqrt(fromIntegral n)) = do
@@ -32,14 +30,14 @@ sumOfSquares curr sum n
         let newCurr = curr+1
             newSum  = sum + curr*curr
 
-        when (newSum < n) $ palindromeCheckAndPrint newSum curr sum
+        palindromeCheckAndPrint newSum n
         sumOfSquares newCurr newSum n
     | otherwise = return ()
 
-palindromeCheckAndPrint :: Int -> Int -> Int -> IO ()
-palindromeCheckAndPrint n curr sum
-    | isPalindrome n = do
-        print n
+palindromeCheckAndPrint :: Int -> Int -> IO ()
+palindromeCheckAndPrint sum n
+    | isPalindrome sum && sum < n = do
+        print sum
     | otherwise = return ()
 
 isPalindrome :: Int -> Bool
@@ -47,8 +45,8 @@ isPalindrome n =
     let str = show n
     in str == reverse str
 
-printSumsOfConsecutiveSquaresThatArePalindromes :: Int -> IO ()
-printSumsOfConsecutiveSquaresThatArePalindromes n = do
+printAllPalindromes :: Int -> IO ()
+printAllPalindromes n = do
     callNext 1 0 n
 
-main = printSumsOfConsecutiveSquaresThatArePalindromes 600
+main = printAllPalindromes 600
