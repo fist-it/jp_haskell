@@ -1,4 +1,5 @@
--- zadanie 38:
+
+-- zadanie 38: {{{
 -- Liczby B-gładkie to takie, których dzielniki pierwsze są mniejsze lub równe B. Dla danego B i n ile jest liczb
 -- B-gładkich nie przekraczających n? Przykładowo dla B = 5 i n = 30 początkowe liczby 5-gładkie inaczej
 -- zwane liczbami Hamming’a to: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 27, 30… więc odpowiedź
@@ -42,7 +43,21 @@ allBSmooth b n = [x | x <- [1..n], isBSmooth b x]
 countBSmooth :: Int -> Int -> Int
 countBSmooth b n = length (allBSmooth b n)
 
--- zadanie 26:
+-- funkcja wrapper do zczytania danych
+countBSmoothWrapper :: IO ()
+countBSmoothWrapper = do
+    putStrLn "Podaj liczbe B:"
+    input <- getLine
+    let b = read input :: Int
+    putStrLn "Podaj liczbe n:"
+    input <- getLine
+    let n = read input :: Int
+    let result = countBSmooth b n
+    putStrLn $ "Ilosc liczb " ++ show b ++ "-gladkich nie przekraczajacych " ++ show n ++ " wynosi: " ++ show result
+
+-- }}}
+
+-- zadanie 26: {{{
 -- Palindrom 595 możemy zapisać jako sumę kwadratów kolejnych liczb naturalnych: 62 + 72 + 82 +
 -- 92 + 102 + 112 + 122. Dla danego n wydrukować wszystkie palindromy mniejsze od n, które możemy
 -- zapisać jako sumę kwadratów kolejnych liczb naturalnych.
@@ -88,7 +103,9 @@ printAllPalindromes = do
     let n = read input :: Int
     callNext 1 0 n
 
--- zadanie 9:
+-- }}}
+
+-- zadanie 9: {{{
 -- dla danej liczby naturalnej n podaj dla jakiej liczby naturalnej m <= n
 -- zaczyna sie najdluzszy ciag Collatza
 --
@@ -120,6 +137,8 @@ collatz = do
   let (m, length) = longestCollatz n
   putStrLn $ "Ciąg Collatza - n = " ++ show n ++ ": Liczba " ++ show m ++ " ma najdłuższy ciąg Collatza o długości " ++ show length ++ "."
 
+-- }}}
+
 main :: IO ()
 main = do
     putStrLn "Zadanie 9"
@@ -127,3 +146,7 @@ main = do
     putStrLn "Zadanie 26"
     printAllPalindromes
     putStrLn "Zadanie 38"
+    countBSmoothWrapper
+    
+
+
