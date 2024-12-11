@@ -47,6 +47,7 @@ countBSmooth b n = length (allBSmooth b n)
 -- 92 + 102 + 112 + 122. Dla danego n wydrukować wszystkie palindromy mniejsze od n, które możemy
 -- zapisać jako sumę kwadratów kolejnych liczb naturalnych.
 
+-- Baza odpowiadająca za inicjowanie sprawdzania od nowego kwadratu
 callNext :: Int -> Int -> Int -> IO()
 callNext curr sum n
     | curr < ceiling(sqrt(fromIntegral n)) = do
@@ -55,6 +56,7 @@ callNext curr sum n
         callNext newCurr 0 n       
     | otherwise = return ()
 
+-- Suma kolejnych kwadratów, rekurencyjnie wywołuje samą siebie podając aktualnie obliczoną sumę dalej
 sumOfSquares :: Int -> Int -> Int -> IO ()
 sumOfSquares curr sum n
     | sum < n = do
@@ -65,17 +67,20 @@ sumOfSquares curr sum n
         sumOfSquares newCurr newSum n
     | otherwise = return ()
 
+-- Sprawdź czy jest palindromem, jeżeli tak wypisz
 palindromeCheckAndPrint :: Int -> Int -> IO ()
 palindromeCheckAndPrint sum n
     | isPalindrome sum && sum < n = do
         print sum
     | otherwise = return ()
 
+-- Zamiana wartości na łańcuch znaków, porównanie z odwróconym łańcuchem
 isPalindrome :: Int -> Bool
 isPalindrome n = 
     let str = show n
     in str == reverse str
 
+-- Funkcja bazowa do wyświetlenia wszystkich palindromów, odpowiada również za zczytanie 'n'
 printAllPalindromes :: IO ()
 printAllPalindromes = do
     putStrLn "Podaj liczbę n:"
