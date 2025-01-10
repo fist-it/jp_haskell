@@ -13,3 +13,6 @@ make build
 ghci main.hs
 ```
 
+### final mark
+
+`15 / 15`
